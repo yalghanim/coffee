@@ -1,8 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.core.urlresolvers import reverse
-from django.template.defaultfilters import slugify
-from django.db.models.signals import pre_save
 
 class Roast(models.Model):
 	roast_type = models.CharField(max_length=30)
@@ -60,6 +57,9 @@ class Coffee(models.Model):
 	extra_instructions = models.TextField()
 	price = models.DecimalField(max_digits=4, decimal_places=3)
 	completed = models.DateTimeField(auto_now_add=True)
+
+	def __str__(self):
+		return self.name
 
 
 

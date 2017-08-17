@@ -2,24 +2,32 @@
 {% load crispy_forms_tags %}
 
 {% block title %}
-Sign Up Page
+YG Coffee - Sign Up Page
 {% endblock title %}
 
-{% block content %}
+{% block style %}
+.bg-faded {
+    background-color: rgba(255, 255, 255, 0.4);
+    max-width: 250px;
+}
 
-<div class="panel panel-default">
-  <div class="panel-body">
-    <form method="Post" action="{% url 'arabica:signup' %}" enctype="multipart/form-data">
+hr.divider {
+    border-color: #292b2c;
+    max-width: 250px;
+}
+{% endblock style %}
+
+{% block content %}
+<br>
+
+<div class="bg-faded p-4 my-4">
+<hr class="divider">
+<form method="Post" action="{% url 'arabica:signup' %}" enctype="multipart/form-data">
 {% csrf_token %}
 {{form|crispy}}<br>
-   </div>
-<div class="panel-footer">
-<div align="center">
-<input class="btn btn-primary" type="submit" value="Sign Up">
-</div>
+<input class="btn btn-danger btn-lg btn-block" type="submit" value="Sign Up">
 </form>
 </div>
-<br><br>
 
 
 {% endblock content %}

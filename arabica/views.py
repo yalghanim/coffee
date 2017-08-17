@@ -1,8 +1,13 @@
 from django.shortcuts import render, redirect
 from .models import *
 from .forms import *
-from django.contrib.auth import authenticate, login, logout 
+from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
 
+
+
+def order(request):
+	return render(request, 'order.html', {})
 
 def usersignup(request):
 	context = {}

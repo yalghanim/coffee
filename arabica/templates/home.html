@@ -2,9 +2,27 @@
 
 
 {% block title %}
-Home page
+YG Coffee - Home
 {% endblock title %}
-
+{% block style %}
+.bg-faded {
+    background-color: rgba(255, 255, 255, 0.4);
+    max-width: 480px;
+}
+h1 {
+	color: black;
+}
+{% endblock style %}
 {% block content %}
-<h1> Welcome Home </h1>
+
+
+
+<div class="row">
+                <div class="bg-faded col-lg-6">
+                    <h1 class="mt-5">The <strong>Best</strong> Coffee in Kuwait!</h1>
+                    <p>
+					As part of Coded's 2017 full-stack developement summer bootcamp, this project will feature a web application for handling coffee orders. Started in week 5, and will take place over two weeks. 
+                    </p>
+                </div>
+            </div>
 {% endblock content %}
