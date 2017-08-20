@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
+from decimal import Decimal
 
 class Roast(models.Model):
 	roast_type = models.CharField(max_length=30)
@@ -51,16 +53,33 @@ class Coffee(models.Model):
 	shots_number = models.IntegerField(default=ONE, choices=shots_choices) 
 	syrup_type = models.ManyToManyField(Syrup)
 	powder_type = models.ManyToManyField(Powder)
-	water = models.FloatField()
+	water = models.FloatField(blank=True, null=True, default='')
 	milk = models.BooleanField(default=False)
-	foam = models.FloatField()
-	extra_instructions = models.TextField()
-	price = models.DecimalField(max_digits=4, decimal_places=3)
+	foam = models.FloatField(blank=True, null=True, default='')
+	extra_instructions = models.TextField(blank=True, null=True, default='')
+	price = models.DecimalField(max_digits=6, decimal_places=3, default=0)
 	completed = models.DateTimeField(auto_now_add=True)
 
 	def __str__(self):
 		return self.name
+	
+	def absurl(self):
+		return reverse("arabica:detail", kwargs={"order_id": self.id})
 
+	def coffeeprice(self):
+		total = 0
+		total += self.bean_type.price
+		total += self.roast_type.price
+		for syrup in self.syrup_type.all():
+			total += syrup.price
+		for powder in self.powder_type.all():
+			total += powder.price	
+		if self.milk:
+			milk_price = .25
+			total += Decimal(milk_price)
+		shots_price = self.shots_number * .5
+		total += Decimal(shots_price)
+		return Decimal(total)
 
 
 # class CoffeeBean(models.Model):

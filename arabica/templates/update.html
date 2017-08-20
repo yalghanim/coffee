@@ -2,7 +2,7 @@
 {% load crispy_forms_tags %}
 
 {% block title %}
-YG Coffee - Order Page
+YG Coffee - Update: {{order.name|title}} 
 {% endblock title %}
 
 {% block style %}
@@ -15,22 +15,20 @@ hr.divider {
     border-color: #292b2c;
     max-width: 1200px;
 }
-
 {% endblock style %}
 
 {% block content %}
 <br>
 <div class="bg-faded p-4 my-4">
 <hr class="divider">
-    <form action="{% url 'arabica:order' %}" method="POST" class="form-horizontal">
+    <form action="{% url 'arabica:update' order_id=order.id %}" method="POST" class="form-horizontal">
         {% csrf_token %}
-       {{order_form|crispy}}
+        {{form|crispy}}
         <br>
         <input class = "btn btn-danger btn-lg btn-block" type="submit" value="Order">
     </form>
    <hr class="divider">
 </div>
 <br><br><br><br>
-
 
 {% endblock content %}

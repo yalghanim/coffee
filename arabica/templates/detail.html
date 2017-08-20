@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block title %}
+YG Coffee - Order: {{x.name|title}}
+{% endblock title %}
+
+{% block style %}
+.bg-faded {
+    background-color: rgba(255, 255, 255, 0.4);
+    max-width: 250px;
+}
+
+hr.divider {
+    border-color: #292b2c;
+    max-width: 250px;
+}
+h3 {
+    color: white;
+}
+{% endblock style %}
+
+{% block content %}
+
+
+<br>
+
+<br><br>
+<div class="col-sm-6 col-md-4">
+    <h4 class="list-group-item-heading">{{x.bean.type}}</h4>
+    <div class="caption">
+<h3> {{x.name|title}}<br><small>Ordered {{x.completed|timesince}} ago</small></h3>
+    </div>
+    <a href="{% url 'arabica:update' order_id=x.id %}" class="btn btn-info" role="button">Update</a>
+    <a href="{% url 'arabica:delete' order_id=x.id %}" class="btn btn-danger" role="button">Delete</a>
+    <br><br>
+    <p class="list-group-item-text">
+    <b>Roast type:</b> {{x.roast_type}}<br>
+    <b>Syrup type:</b> {% for x in x.syrup_type.all %}{{x.syrup_type}} - {% endfor %}<br>
+    <b>Powder type:</b> {% for x in x.powder_type.all %}{{x.powder_type}} - {% endfor %}<br>
+    <b>Number of shots:</b> {{x.shots_number}}<br>
+    <b>Water amount:</b> {% if x.water is not None %}{{x.water}} litres{% endif %}<br>
+    <b>Milk:</b> {% if x.milk is True %} Yes {% endif %}<br>
+    <b>Foam:</b> {% if x.foam is not None %}{{x.foam}} cm{% endif %}<br>
+    <small> <b> Instructions: </b> {{x.extra_instructions}}</small><br>
+    <small> <b> Price: </b> {{x.price}}</small>
+
+    </p>
+    <a href="{% url 'arabica:list' %}" class="btn btn-success btn-lg btn-block" role="button">Go back to orders list</a>
+  </div>
+
+<br>
+
+
+
+
+{% endblock content %}

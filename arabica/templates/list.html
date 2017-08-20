@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block title %}
+YG Coffee - {{user|title}} Order List
+{% endblock title %}
+
+{% block style %}
+hr.divider {
+    border-color: white;
+    max-width: 250px;
+}
+
+{% endblock style %}
+
+{% block content %}
+
+
+<br>
+
+<form action="{% url 'arabica:list' %}" method="GET">
+<input type="text" name="q" placeholder="Search your orders" value="{{request.GET.q}}">
+<input type="submit" value="search" class="btn btn-success">
+<input type="reset" value="clear" class="btn btn-default">
+</form>
+<br>
+<h1> Orders of {{user|title}}: </h1>
+<br>
+<div class="row">
+{% for x in order_list %}
+<div class="col-sm-6 col-md-4">
+    <h4 class="list-group-item-heading">{{x.bean.type}}</h4>
+    <div class="caption">
+<h3> {{x.name|title}}<br><small>Ordered {{x.completed|timesince}} ago</small></h3>
+    </div>
+    <a href="{{x.absurl}}" class="btn btn-success" role="button">View</a>
+    <a href="{% url 'arabica:update' order_id=x.id %}" class="btn btn-info" role="button">Update</a>
+    <a href="{% url 'arabica:delete' order_id=x.id %}" class="btn btn-danger" role="button">Delete</a>
+    <br><br>
+
+  </div>
+<br>
+{% endfor %}
+</div>
+
+
+{% endblock content %}
+
+
+

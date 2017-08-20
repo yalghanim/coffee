@@ -3,11 +3,118 @@ from .models import *
 from .forms import *
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
+from django.db.models import Q
+from django.http import Http404
+from django.shortcuts import get_object_or_404
+
+#make sure that orders updated/deleted are related to user
+def update(request, order_id):
+	order = get_object_or_404(Coffee, id= order_id)
+	if not (request.user.is_staff or request.user.is_superuser or order.user == request.user):
+		raise Http404()
+	form = OrderForm(request.POST or None, instance = order)
+	if form.is_valid():
+		form.save()
+		messages.success(request, "Your order has been updated.")
+		return redirect(order.absurl())
+	context = {
+	"form": form,
+	"order": order,
+	}
+	return render(request, 'update.html', context)
 
 
+def delete(request, order_id):
+	order = get_object_or_404(Coffee, id= order_id)
+	if not (request.user.is_staff or request.user.is_superuser or order.user == request.user):
+		raise Http404()
+	order.delete()
+	messages.success(request, "Order deleted.")
+	return redirect("arabica:list")
+
+def orderdetail(request, order_id):
+	obj = get_object_or_404(Coffee, id=order_id)
+	context = {
+	"x": obj,
+	}
+	return render(request, 'detail.html', context) 
+
+def delete(request, order_id):
+	if not (request.user.is_staff or request.user.is_superuser):
+		raise Http404()
+	order = get_object_or_404(Coffee, id= order_id)
+	order.delete()
+	messages.success(request, "Order deleted.")
+	return redirect("arabica:list")
+
+def orderlist(request):
+	order_list = request.user.coffee_set.all().order_by("-completed") 
+
+	query = request.GET.get("q")
+	if query:
+		order_list = order_list.filter(
+			Q(name__icontains=query)
+			).distinct()
+
+	context = {
+	"order_list": order_list,
+	"user": request.user,
+	}
+	return render(request, 'list.html', context) 
+
+def rbsp(request):
+	if not (request.user.is_staff or request.user.is_superuser):
+		raise Http404()
+	
+	roast_form = RoastForm(request.POST or None)
+	if roast_form.is_valid():
+		roast_form.save()
+		messages.success(request, "Thank you for adding a roast.")
+		return redirect("arabica:rbsp")
+	
+	bean_form = CoffeeBeanForm(request.POST or None)
+	if bean_form.is_valid():
+		bean_form.save()
+		messages.success(request, "Thank you for adding a bean.")
+		return redirect("arabica:rbsp")	
+
+	syrup_form = SyrupForm(request.POST or None)
+	if syrup_form.is_valid():
+		syrup_form.save()
+		messages.success(request, "Thank you for adding a syrup.")
+		return redirect("arabica:rbsp")
+
+	powder_form = PowderForm(request.POST or None)
+	if powder_form.is_valid():
+		powder_form.save()
+		messages.success(request, "Thank you for adding a powder.")
+		return redirect("arabica:rbsp")
+
+
+	context = {
+	"roast_form": roast_form,
+	"bean_form": bean_form,
+	"syrup_form": syrup_form,
+	"powder_form": powder_form,
+	}
+	
+	return render(request, 'rbsp.html', context)
 
 def order(request):
-	return render(request, 'order.html', {})
+	if not (request.user.is_authenticated):
+		raise Http404()
+	order_form = OrderForm(request.POST or None)
+	if order_form.is_valid():
+		# obj = order_form.save(commit=False)
+		obj = order_form.save()
+		obj.price = obj.coffeeprice()
+		obj.save()
+		messages.success(request, "Thank you for your order.")
+		return redirect("arabica:list")
+	context = {
+	"order_form": order_form,
+	}
+	return render(request, 'order.html', context)
 
 def usersignup(request):
 	context = {}
@@ -21,7 +128,7 @@ def usersignup(request):
 			password = user.password
 			email = user.email
 			first_name = user.first_name
-			last_name = form.last_name
+			last_name = user.last_name
 			user.set_password(password)
 			user.save()
 			auth_user = authenticate(username=username, password=password)

@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block title %}
+YG Coffee - Add Syrup, Powder, Bean, or Roast
+{% endblock title %}
+
+{% block style %}
+.bg-faded {
+    background-color: rgba(255, 255, 255, 0.4);
+    max-width: 250px;
+}
+
+hr.divider {
+    border-color: #292b2c;
+    max-width: 250px;
+}
+{% endblock style %}
+
+{% block content %}
+<br>
+<div class="row text-center">
+<div class="bg-faded col-sm-3">
+<hr class="divider">
+    <form action="{% url 'arabica:rbsp' %}" method="POST" class="form-horizontal">
+        {% csrf_token %}
+        {{roast_form|crispy}}
+        <br>
+        <input class = "btn btn-danger btn-lg btn-block" type="submit" value="Add">
+    </form>
+   <hr class="divider">
+</div>
+<br>
+<div class="bg-faded col-sm-3">
+<hr class="divider">
+    <form action="{% url 'arabica:rbsp' %}" method="POST" class="form-horizontal">
+        {% csrf_token %}
+        {{bean_form|crispy}}
+        <br>
+        <input class = "btn btn-danger btn-lg btn-block" type="submit" value="Add">
+    </form>
+   <hr class="divider">
+</div>
+<br>
+<div class="bg-faded col-sm-3">
+<hr class="divider">
+    <form action="{% url 'arabica:rbsp' %}" method="POST" class="form-horizontal">
+        {% csrf_token %}
+        {{syrup_form|crispy}}
+        <br>
+        <input class = "btn btn-danger btn-lg btn-block" type="submit" value="Add">
+    </form>
+   <hr class="divider">
+</div>
+<br>
+<div class="bg-faded col-sm-3">
+<hr class="divider">
+    <form action="{% url 'arabica:rbsp' %}" method="POST" class="form-horizontal">
+        {% csrf_token %}
+        {{powder_form|crispy}}
+        <br>
+        <input class = "btn btn-danger btn-lg btn-block" type="submit" value="Add">
+    </form>
+   <hr class="divider">
+</div>
+</div>
+
+{% endblock content %}
