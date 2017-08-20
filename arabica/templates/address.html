@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+YG Coffee - Address Page
+{% endblock title %}
+
+{% block style %}
+.bg-faded {
+    background-color: rgba(255, 255, 255, 0.4);
+    max-width: 1200px;
+}
+
+hr.divider {
+    border-color: #292b2c;
+    max-width: 1200px;
+}
+
+{% endblock style %}
+
+{% block content %}
+<br>
+<div class="bg-faded p-4 my-4">
+<hr class="divider">
+    <form action="{% url 'arabica:address' %}" method="POST" class="form-horizontal">
+        {% csrf_token %}
+       {{form|crispy}}
+        <br>
+        <input class = "btn btn-danger btn-lg btn-block" type="submit" value="Add Address">
+    </form>
+   <hr class="divider">
+</div>
+<br><br><br><br>
+
+
+{% endblock content %}

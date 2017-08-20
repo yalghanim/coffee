@@ -37,5 +37,7 @@ admin.site.register(Syrup, SyrupAdmin)
 admin.site.register(Powder, PowderAdmin)
 admin.site.register(CoffeeBean, CoffeeBeanAdmin)
 admin.site.register(Coffee)
+admin.site.register(Address)
+admin.site.register(City)
 
 

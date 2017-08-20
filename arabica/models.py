@@ -3,6 +3,8 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from decimal import Decimal
 
+
+
 class Roast(models.Model):
 	roast_type = models.CharField(max_length=30)
 	price = models.DecimalField(max_digits=4, decimal_places=3)
@@ -80,6 +82,28 @@ class Coffee(models.Model):
 		shots_price = self.shots_number * .5
 		total += Decimal(shots_price)
 		return Decimal(total)
+
+class City(models.Model):
+	name = models.CharField(max_length=50)
+
+	def __str__(self):
+		return self.name
+
+class Address(models.Model):
+	user = models.ForeignKey(User, default=1)
+	name = models.CharField(max_length=50)
+	city = models.ForeignKey(City, default=1)
+	block = models.PositiveIntegerField()
+	street = models.CharField(max_length=50)
+	building = models.CharField(max_length=50)
+	avenue = models.PositiveIntegerField(blank=True, null=True, default='')
+	floor = models.PositiveIntegerField(blank=True, null=True, default='')
+	apt_number = models.PositiveIntegerField(blank=True, null=True, default='')
+	extra_directions = models.TextField(blank=True, null=True, default='')
+
+	def __str__(self):
+		return self.name
+
 
 
 # class CoffeeBean(models.Model):

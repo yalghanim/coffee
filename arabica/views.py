@@ -7,7 +7,26 @@ from django.db.models import Q
 from django.http import Http404
 from django.shortcuts import get_object_or_404
 
-#make sure that orders updated/deleted are related to user
+def address(request):
+	if not (request.user.is_authenticated):
+		raise Http404()
+	form = AddressForm(request.POST or None)
+	if form.is_valid():
+		form.save()
+		messages.success(request, "Address has been added.")
+		return redirect("arabica:list")
+	context = {
+	"form": form,
+	}
+	return render(request, 'address.html', context)
+
+def adminlist(request):
+	users = User.objects.all()
+	context = {
+	"users": users,
+	}
+	return render(request, 'adminlist.html', context)
+
 def update(request, order_id):
 	order = get_object_or_404(Coffee, id= order_id)
 	if not (request.user.is_staff or request.user.is_superuser or order.user == request.user):
@@ -123,7 +142,7 @@ def usersignup(request):
 	if request.method == "POST":
 		form = UserSignUp(request.POST)
 		if form.is_valid():
-			user = form.save(commit=False) #so we can retrieve the object
+			user = form.save(commit=False)
 			username = user.username
 			password = user.password
 			email = user.email

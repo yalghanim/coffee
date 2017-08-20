@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block title %}
+YG Coffee - Admin List of Coffee/User
+{% endblock title %}
+
+{% block style %}
+hr.divider {
+    border-color: white;
+    max-width: 250px;
+}
+h4 {
+    color:black;
+}
+h3 {
+    color:green;
+}
+.bg-faded {
+    background-color: rgba(255, 255, 255, 0.4);
+    max-width: 480px;
+}
+{% endblock style %}
+
+{% block content %}
+
+
+<br>
+
+<div class="row">
+{% for x in users %}
+<div class="bg-faded col-sm-6 col-md-4">
+<h4 class="list-group-item-heading">{{x.username|title}}
+<small>{{x.first_name}} {{x.last_name}}</small></h4>
+    <div class="caption">
+<h3> Coffees ordered: </h3>
+    </div> <p>
+    {% for y in x.coffee_set.all %}
+    <a href="{{y.absurl}}">{{y.name}}</a>
+    <br>
+    {% endfor %}
+    </p>
+</div>
+<br>
+{% endfor %}
+</div>
+
+
+
+<br>
+
+
+{% endblock content %}

@@ -46,6 +46,32 @@ class CoffeeBeanForm(forms.ModelForm):
 		model = CoffeeBean
 		fields = ['bean_type', 'price']
 
+class AddressForm(forms.ModelForm):
+	class Meta:
+		model = Address
+		fields = ['name', 'city', 'block', 'street', 'building', 'avenue', 'floor', 'apt_number', 'extra_directions']
+		# help_texts = {
+		# 	'extra_instructions': 'Write any extra instructions you might have for us.',
+		# 	'water': 'in mL',
+		# 	'foam': 'in mL',
+		# }
+		# labels = {
+		# 	'name': 'Your name',
+		# 	'bean_type': 'Type of Bean',
+		# 	'roast_type': 'Degree of Roast',
+		# 	'shots_number': 'Number of Shots',
+		# 	'Syrup_type': 'Syrup(s) to add',
+		# 	'Powder_type': 'Powder(s) to add',
+		# 	'water': 'How much water to add.',
+		# 	'milk': 'Milk?',
+		# 	'foam': 'How much foam to add.',
+		# }
+class CityForm(forms.ModelForm):
+	class Meta:
+		model = City
+		fields = ['name']
+
+
 class OrderForm(forms.ModelForm):
 	class Meta:
 		model = Coffee
