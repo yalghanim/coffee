@@ -8,29 +8,103 @@ YG Coffee - Order Page
 {% block style %}
 .bg-faded {
     background-color: rgba(255, 255, 255, 0.4);
-    max-width: 1200px;
 }
 
 hr.divider {
     border-color: #292b2c;
     max-width: 1200px;
 }
-
+#hint_id_water {
+    color: white;
+}
 {% endblock style %}
 
+
 {% block content %}
+<nav class="navbar navbar-expand-lg navbar-light bg-faded fixed-top" style="background-color: #00704a; opacity: 0.7;">
+<h3> Order Price: <span id="calculation"> 0.000 </span> KWD</h3>
+</nav>
+<br><br>
 <br>
 <div class="bg-faded p-4 my-4">
 <hr class="divider">
-    <form action="{% url 'arabica:order' %}" method="POST" class="form-horizontal">
+    <form action="{% url 'arabica:order' %}" method="POST" class="form-horizontal" onchange="price()">
         {% csrf_token %}
        {{order_form|crispy}}
         <br>
-        <input class = "btn btn-danger btn-lg btn-block" type="submit" value="Order">
+        <h3>Price: <span id="calculation"> 0.000 </span> KWD </h3>
+        <br>
+        <input class = "btn btn-lg btn-block" type="submit" value="Order" style="background-color: #00704a; color: white;">
     </form>
    <hr class="divider">
 </div>
-<br><br><br><br>
+<br><br>
+
+<br><br>
+
+<script>
+
+function price() {
+var shots = document.getElementById("id_shots_number").value;
+console.log(shots);
+
+var milk = document.getElementById("id_milk").checked;
+console.log(milk);
+
+var bean = document.getElementById("id_bean_type");
+var bean_id = bean[bean.selectedIndex].value;
+console.log(bean_id);
+
+var roast = document.getElementById("id_roast_type");
+var roast_id = roast[roast.selectedIndex].value;
+console.log(roast_id);
+
+var syrups = document.getElementById("id_syrup_type");
+var selected_syrups = [];
+
+for (var i = 0; i<syrups.length;i++)
+{
+    if(syrups.options[i].selected)
+    {
+        selected_syrups.push(syrups.options[i].value);
+    }
+}
+
+console.log(selected_syrups);
+
+var powders = document.getElementById("id_powder_type");
+var selected_powders = [];
+
+for (var i = 0; i<powders.length;i++)
+{
+    if(powders.options[i].selected)
+    {
+        selected_powders.push(powders.options[i].value);
+    }
+}
+console.log(selected_powders);
 
 
+ $.ajax({
+    type: 'GET',
+    url: '{% url "arabica:ajax" %}',
+    data: {
+        bean: bean_id,
+        roast: roast_id,
+        shots: shots,
+        milk: milk,
+        syrups: JSON.stringify(selected_syrups),
+        powders: JSON.stringify(selected_powders),
+    },
+    error: function(){
+        console.log("it's not working!!");
+    },
+    success: function(data){
+        console.log(data);
+        document.getElementById("calculation").innerHTML=data;
+    }
+  });
+
+}
+</script>
 {% endblock content %}

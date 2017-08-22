@@ -4,8 +4,42 @@ from .forms import *
 from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from django.db.models import Q
-from django.http import Http404
+from django.http import Http404, JsonResponse
 from django.shortcuts import get_object_or_404
+import json
+from decimal import Decimal
+
+
+
+def ajaxcalculation(request):
+	total = Decimal(0)
+
+	bean_id = request.GET.get('bean')
+	if bean_id:
+		total += CoffeeBean.objects.get(id=bean_id).price
+
+	roast_id = request.GET.get('roast')
+	if roast_id:
+		total += Roast.objects.get(id=roast_id).price
+
+	shots = request.GET.get('shots')
+	total += Decimal(int(shots) * 0.500)
+
+	milk = request.GET.get('milk')
+	if milk:
+		total += Decimal(0.250)
+
+#json.loads de-stringifies the JSON.stringify in the script that was used for the list IDs
+	syrups = json.loads(request.GET.get('syrups'))
+	for syrup in syrups:
+		total += Syrup.objects.get(id=syrup).price
+	
+	powders = json.loads(request.GET.get('powders'))
+	for powder in powders:
+		total += Powder.objects.get(id=powder).price
+
+	print(round(total, 3))
+	return JsonResponse(total, safe=False)
 
 def address(request):
 	if not (request.user.is_authenticated):
@@ -21,6 +55,8 @@ def address(request):
 	return render(request, 'address.html', context)
 
 def adminlist(request):
+	if not (request.user.is_staff or request.user.is_superuser):
+		raise Http404()
 	users = User.objects.all()
 	context = {
 	"users": users,
@@ -53,6 +89,8 @@ def delete(request, order_id):
 
 def orderdetail(request, order_id):
 	obj = get_object_or_404(Coffee, id=order_id)
+	if not (request.user.is_staff or request.user.is_superuser or obj.user == request.user):
+		raise Http404()
 	context = {
 	"x": obj,
 	}

@@ -16,6 +16,7 @@ urlpatterns = [
     url(r'^detail/(?P<order_id>[-\w]+)/$', views.orderdetail, name="detail"),
     url(r'^update/(?P<order_id>[-\w]+)/$', views.update, name="update"),
     url(r'^delete/(?P<order_id>[-\w]+)/$', views.delete, name="delete"),
+    url(r'^ajax/$', views.ajaxcalculation, name="ajax"),
 ]
 
 

@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from decimal import Decimal
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 
 
@@ -34,25 +35,26 @@ class CoffeeBean(models.Model):
 		return self.bean_type
 
 class Coffee(models.Model):
-	ONE = 1
-	TWO = 2
-	THREE = 3
-	FOUR = 4
-	FIVE = 5
-	shots_choices = (
-    (ONE, 'One'),
-    (TWO, 'Two'),
-    (THREE, 'Three'),
-    (FOUR, 'Four'),
-    (FIVE, 'Five'),
-	)
+	# ONE = 1
+	# TWO = 2
+	# THREE = 3
+	# FOUR = 4
+	# FIVE = 5
+	# shots_choices = (
+ #    (ONE, 'One'),
+ #    (TWO, 'Two'),
+ #    (THREE, 'Three'),
+ #    (FOUR, 'Four'),
+ #    (FIVE, 'Five'),
+	# )
 #in case it doesnt work, use positiveintegerfield
 
 	user = models.ForeignKey(User, default=1)
 	name = models.CharField(max_length=50)
 	bean_type = models.ForeignKey(CoffeeBean)
 	roast_type = models.ForeignKey(Roast)
-	shots_number = models.IntegerField(default=ONE, choices=shots_choices) 
+	shots_number = models.PositiveIntegerField(default=1,validators=[MaxValueValidator(5), MinValueValidator(1)])
+	# shots_number = models.IntegerField(default=ONE, choices=shots_choices) 
 	syrup_type = models.ManyToManyField(Syrup)
 	powder_type = models.ManyToManyField(Powder)
 	water = models.FloatField(blank=True, null=True, default='')
