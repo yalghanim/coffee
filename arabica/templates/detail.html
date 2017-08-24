@@ -42,8 +42,14 @@ h3 {
     <b>Foam:</b> {% if x.foam is not None %}{{x.foam}} cm{% endif %}<br>
     <small> <b> Instructions: </b> {{x.extra_instructions}}</small><br>
     <small> <b> Price: </b> {{x.price}}</small>
-
     </p>
+    <br>
+    <form action="" method="GET"><br>
+<input type="hidden" name="item" value="{{x.id}}">
+<input type="number" name="qty" value="1"> 
+<input type="submit" class="btn btn-success" value="Add to Cart">
+</form>
+<br><br>
     <a href="{% url 'arabica:list' %}" class="btn btn-success btn-lg btn-block" role="button">Go back to orders list</a>
   </div>
 

@@ -16,12 +16,14 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from arabica import views
+from cart import views
 from django.conf import settings 
 from django.conf.urls.static import static 
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^', include('arabica.urls', namespace="arabica")),
+    url(r'^cart/', include('cart.urls', namespace="cart")),   
 ]
 
 if settings.DEBUG:

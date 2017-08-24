@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block title %}
+YG Coffee - Create an Address for {{user|title}} 
+{% endblock title %}
+
+{% block style %}
+.bg-faded {
+    background-color: rgba(255, 255, 255, 0.4);
+}
+
+hr.divider {
+    border-color: #292b2c;
+    max-width: 1200px;
+}
+
+{% endblock style %}
+
+{% block content %}
+
+<br>
+<div class="bg-faded p-4 my-4">
+<hr class="divider">
+    <form action="{% url 'cart:create_address' %}" method="POST" class="form-horizontal">
+        {% csrf_token %}
+       {{form|crispy}}
+        <input class = "btn btn-lg btn-block" type="submit" value="Create Address" style="background-color: #00704a; color: white;">
+    </form>
+   <hr class="divider">
+</div>
+<br><br>
+
+
+
+
+{% endblock content %}

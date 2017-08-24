@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block title %}
+YG Coffee - {{user|title}} Address List
+{% endblock title %}
+
+{% block style %}
+
+
+{% endblock style %}
+
+{% block content %}
+
+
+<br>
+<div class="bg-faded p-4 my-4">
+<hr class="divider">
+    <form action="{% url 'cart:select_address' %}" method="POST" class="form-horizontal">
+        {% csrf_token %}
+       {{form|crispy}}
+        <input class = "btn btn-lg btn-block" type="submit" value="Select Address" style="background-color: #00704a; color: white;">
+    </form>
+   <hr class="divider">
+</div>
+<br><br>
+
+
+{% endblock content %}

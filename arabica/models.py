@@ -107,6 +107,45 @@ class Address(models.Model):
 		return self.name
 
 
+	def full_address(self):
+		address = ""
+
+		city = self.city.name
+		address += "%s "%city
+
+		block = self.block
+		address+= "%s "%block
+
+		address+= "%s "%avenue
+
+		street = self.street
+		address +="%s "%street
+
+		building_number = self.building_number
+		address+= "%s "%building_number
+
+		avenue = ""
+		if self.avenue:
+			avenue=self.avenue
+
+		floor = ""
+		if self.floor:
+			floor = self.floor
+		address += "%s "%floor
+
+		apt_number = ""
+		if self.apt_number:
+			apt_number = self.apt_number
+		address+= "%s "%apt_number
+
+		return address
+
+
+
+
+
+#     def __str__(self):
+#         return self.name+" Order"
 
 # class CoffeeBean(models.Model):
 # 	arabica = 'ARABICA'

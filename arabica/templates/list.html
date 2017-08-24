@@ -19,8 +19,8 @@ hr.divider {
 
 <form action="{% url 'arabica:list' %}" method="GET">
 <input type="text" name="q" placeholder="Search your orders" value="{{request.GET.q}}">
-<input type="submit" value="search" class="btn btn-success">
-<input type="reset" value="clear" class="btn btn-default">
+<input type="submit" value="Search" class="btn btn-success">
+<input type="reset" value="Clear" class="btn btn-default">
 </form>
 <br>
 <h1> Orders of {{user|title}}: </h1>
@@ -35,8 +35,11 @@ hr.divider {
     <a href="{{x.absurl}}" class="btn btn-success" role="button">View</a>
     <a href="{% url 'arabica:update' order_id=x.id %}" class="btn btn-info" role="button">Update</a>
     <a href="{% url 'arabica:delete' order_id=x.id %}" class="btn btn-danger" role="button">Delete</a>
-    <br><br>
-
+<form action="{% url 'cart:mycart' %}" method="GET"><br>
+<input type="hidden" name="item" value="{{x.id}}">
+<input type="hidden" name="qty" value="1"> 
+<input type="submit" class="btn btn-default" value="Add to Cart">
+</form>
   </div>
 <br>
 {% endfor %}
