@@ -44,17 +44,24 @@ def select_address(request):
 	if Address.objects.filter(user=request.user).count() < 1:
 		return redirect("cart:create_address")
 	form = AddressSelectForm()
+	form.fields['address'].queryset = Address.objects.filter(user= request.user)
 	if request.method == 'POST':
 		form = AddressSelectForm(request.POST)
 		if form.is_valid():
 			selected_address = form.cleaned_data['address']
-			order = Order.objects.get(request.user)
+			order = Order.objects.get(user=request.user)
 			order.address = selected_address
 			order.save()
-			return redirect("/") #redirect back to checkout
+			return redirect("payment:pay", order_id=order.id) #redirect to payment gateway
 
 	context = {
 		'form': form
 	}
 	return render (request, 'select_address.html', context)
+
+def checkout(request):
+	cart, created = Cart.objects.get_or_create(user=request.user)
+	order, created = Order.objects.get_or_create(cart=cart, user=request.user)
+
+	return redirect("cart:select_address")
 

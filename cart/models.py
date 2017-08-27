@@ -12,7 +12,7 @@ class CartItem(models.Model):
 	line_item_total = models.DecimalField(max_digits= 6, decimal_places=3)
 
 	def __str__(self):
-		return self.item.cart
+		return self.item.name
 
 
 def cart_item_pre_save(sender, instance, *args, **kwargs):
@@ -64,7 +64,7 @@ pre_save.connect(delivery_and_total, sender=Cart)
 class Order(models.Model):
 	cart = models.ForeignKey(Cart)
 	user = models.ForeignKey(User)
-	address = models.ForeignKey(Address)
+	address = models.ForeignKey(Address, null=True)
 
 	def __str__(self):
 		return self.user

@@ -26,6 +26,7 @@ hr.divider {
 <h1> Orders of {{user|title}}: </h1>
 <br>
 <div class="row">
+{% if order_list.count < 1 %}<br><h3>&emsp;No orders yet. </h3>{% endif %}
 {% for x in order_list %}
 <div class="col-sm-6 col-md-4">
     <h4 class="list-group-item-heading">{{x.bean.type}}</h4>
@@ -43,6 +44,8 @@ hr.divider {
   </div>
 <br>
 {% endfor %}
+
+
 </div>
 
 

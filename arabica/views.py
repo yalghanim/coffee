@@ -79,14 +79,6 @@ def update(request, order_id):
 	return render(request, 'update.html', context)
 
 
-def delete(request, order_id):
-	order = get_object_or_404(Coffee, id= order_id)
-	if not (request.user.is_staff or request.user.is_superuser or order.user == request.user):
-		raise Http404()
-	order.delete()
-	messages.success(request, "Order deleted.")
-	return redirect("arabica:list")
-
 def orderdetail(request, order_id):
 	obj = get_object_or_404(Coffee, id=order_id)
 	if not (request.user.is_staff or request.user.is_superuser or obj.user == request.user):
@@ -97,7 +89,7 @@ def orderdetail(request, order_id):
 	return render(request, 'detail.html', context) 
 
 def delete(request, order_id):
-	if not (request.user.is_staff or request.user.is_superuser):
+	if not (request.user.is_staff or request.user.is_superuser or obj.user == request.user):
 		raise Http404()
 	order = get_object_or_404(Coffee, id= order_id)
 	order.delete()
@@ -165,6 +157,7 @@ def order(request):
 		# obj = order_form.save(commit=False)
 		obj = order_form.save()
 		obj.price = obj.coffeeprice()
+		obj.user = request.user
 		obj.save()
 		messages.success(request, "Thank you for your order.")
 		return redirect("arabica:list")

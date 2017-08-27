@@ -23,7 +23,8 @@ from django.conf.urls.static import static
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^', include('arabica.urls', namespace="arabica")),
-    url(r'^cart/', include('cart.urls', namespace="cart")),   
+    url(r'^cart/', include('cart.urls', namespace="cart")),
+    url(r'^payment/', include('payment.urls', namespace="payment")), 
 ]
 
 if settings.DEBUG:

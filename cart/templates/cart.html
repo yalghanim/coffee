@@ -15,31 +15,36 @@ tr {
 {% block content %}
 
 <div class="row">
-<div class="col-sm-12">
-<h1>Your cart:</h1>
-<table class="table">
-{% for item in cart.cartitem_set.all %}
-<tr>
-<td>
-{{item.item.name}}
-</td>
-<td>
-<form action="{% url 'cart:mycart' %}" method="GET"><br>
-<input type="hidden" name="item" value="{{item.item.id}}">
-<input type="number" name="qty" value="{{item.quantity}}"> 
-<input type="submit" class="btn btn-warning" value="Update Item">
-</form>
-</td>
-<td>
-{{item.line_item_total}}
-</td>
-</tr>
-{% endfor %}
-<tr>Subtotal: {{cart.subtotal}}</tr>&emsp;
-<tr>Delivery: {{cart.delivery_total}}</tr>&emsp;
-<tr>Total: {{cart.total}}
-</table>
-</div>
+	<div class="col-sm-12">
+		<h1>Your cart:</h1>
+		{% if cart.cartitem_set.count < 1 %}
+			<br> <h1> Your Cart is empty! </h1>
+		{% else %}
+			<table class="table">
+			{% for item in cart.cartitem_set.all %}
+				<tr>
+					<td>
+						{{item.item.name}}
+					</td>
+					<td>
+						<form action="{% url 'cart:mycart' %}" method="GET"><br>
+							<input type="hidden" name="item" value="{{item.item.id}}">
+							<input type="number" name="qty" value="{{item.quantity}}"> 
+							<input type="submit" class="btn btn-warning" value="Update Item">
+						</form>
+					</td>
+					<td>
+						{{item.line_item_total}}
+					</td>
+				</tr>
+			{% endfor %}
+				<tr align="center"><td>Subtotal: {{cart.subtotal}}</td></tr>&emsp;
+				<tr align="center"><td>Delivery: {{cart.delivery_total}}</td></tr>&emsp;
+				<tr align="center"><td>Total: {{cart.total}}</td></tr>
+				<tr><td><a href="{% url 'cart:checkout' %}" class="btn btn-success btn-block"> Checkout </a></td></tr>
+			</table>
+		{% endif %}
+	</div>
 </div>
 
 

@@ -4,3 +4,4 @@ django-crispy-forms==1.6.1
 olefile==0.44
 Pillow==4.2.1
 pytz==2017.2
+suds-jurko==0.6
